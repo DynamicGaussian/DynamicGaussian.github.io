@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="DynamicGaussian: Spatio-temporally Consistent 4D Gaussian Splatting for High-Fidelity Monocular Videos Reconstruction.">
+  <meta name="keywords" content="4D Gaussian Splatting, Monocular Videos Reconstruction">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DynamicGaussian: Spatio-temporally Consistent 4D Gaussian Splatting for High-Fidelity Monocular Videos Reconstruction.</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/img_1.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!--
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">DynamicGaussian: Spatio-temporally Consistent 4D Gaussian Splatting for High-Fidelity Monocular Videos Reconstruction</h1>
+          <div class="is-size-5 publication-authors">
+            <!--
+            <span class="author-block">
+              <a href="https://keunhong.com">Keunhong Park</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://utkarshsinha.com">Utkarsh Sinha</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://jonbarron.info">Jonathan T. Barron</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://sofienbouaziz.com">Sofien Bouaziz</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.danbgoldman.com">Dan B Goldman</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://homes.cs.washington.edu/~seitz/">Steven M. Seitz</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://www.ricardomartinbrualla.com">Ricardo Martin-Brualla</a><sup>2</sup>
+            </span> -->
+            <span class="author-block">
+              <a>ICME Submission#2438</a><sup>1</sup></span>
+          </div>
+          <!--
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of Washington,</span>
+            <span class="author-block"><sup>2</sup>Google Research</span>
+          </div> -->
+          <!--
+          <div class="column has-text-centered">
+            <div class="publication-links"> -->
+              <!-- PDF Link. -->
+          <!--
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2011.12948"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span> -->
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(Coming Soon)</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Nerfies Dataset</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://gorokee.github.io/jsyoon/dynamic_synth/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Dynamic Scene Dataset</span>
+                </a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero framework">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/teaser.png" alt="teaser img"/>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">DynamicGaussian</span>(our model) outperformed the sota models.
+        The left side is the main function of our method. DynamicGaussian can learn from monocular videos to get reconstruction results in any free viewpoint.
+        The right side of the image shows the results of the reconstruction comparison between our model and the sota model Deformable-3DGS, and 4D-Rotors-Gaussian where our model reconstructs an image with fewer artifacts.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero method">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/fig2.png" alt="method img"/>
+      <h2 class="subtitle has-text-centered">
+        We first distinguish the scene into dynamic and static parts by mask.
+        Then the dynamic part and static part are modeled separately, after which the static image and dynamic image are generated respectively, after which we segment the dynamic image using the trained segmentation model, so that we get the free viewpoint image of the whole scene.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="columns is-max-desktop">
+  <div class="hero-body">
+    <div class="columns is-centered has-text-centered">
+    <div class="container">
+        <div class="item item-Balloon1">
+          <video poster="" id="Balloon1" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/Balloon1.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-Balloon2">
+          <video poster="" id="Balloon2" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/Balloon2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Representing and reconstructing scenes from monocular videos is a challenging problem in computer vision. Some methods have been proposed to mitigate this issue.
+            However, most previous work has only considered either the dynamic part or the static part, which leads to artifacts without inaccurate motion constraints.
+            In this work, we propose DynamicGaussian that effectively handles video scenes by decomposing the video into static and dynamic components and modeling them independently using 4D Gaussian splatting techniques.
+            Specially, the core of our method lies in a novel 4D Gaussian representation that applies 4D Eulerian angles, providing a robust foundation for encoding scene geometry and appearance with fewer parameters and achieving efficient results.
+            In addition, to enhance the ability to capture the trajectories of dynamic objects, a novel optical flow-based approach is introduced to model dynamic components by leveraging a 2D prior to constrain 3D motion. The depth information is also integrated to refine the fusion of static and dynamic parts.
+            Extensive experiments demonstrate that our reconstructed video has PSNR and LPIPS improvements over existing sota methods on Dynamic Scene dataset and Nerfies dataset.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!--<div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Fix-time-change-view</h2>
+          <p>
+            In the first task of the new perspective rendering we can see that <i>DynamicGaussian</i> has some minor errors in geometry with sparse perspectives, but <i>DynamicGaussian</i> is the best model for the metrics.
+          </p>
+          <video id="Playground" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/Balloon2_view.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <!--/ Visual Effects. -->
+
+      <!-- Matting. -->
+      <div class="column">
+        <h2 class="title is-3">Fix-view-change-time</h2>
+        <div class="columns is-centered">
+          <div class="column content">
+            <p>
+              In the second task of the new perspective rendering we can see that <i>DynamicGaussian</i> roughly recovers a more accurate geometry in the sparse perspective
+            </p>
+            <video id="Balloon2view" controls playsinline height="100%">
+              <source src="./static/videos/Playground_time.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Matting. -->
+    <!-- Matting. -->
+      <div class="column">
+        <h2 class="title is-3">Reconstruction</h2>
+        <div class="columns is-centered">
+          <div class="column content">
+            <p>
+              <i>DynamicGaussian</i> has the highest video reconstruction quality in sparse views.
+            </p>
+            <video id="Truck" controls playsinline height="100%">
+              <source src="./static/videos/Truck.mp4"
+                      type="video/mp4">
+            </video>
+            <video id="Jumping" controls playsinline height="100%">
+              <source src="./static/videos/Jumping.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/ Matting. -->
+</section>
+    <!-- Animation. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Downstream Processing</h2>
+
+        <!-- Interpolating. -->
+        <h3 class="title is-3"></h3>
+        <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <p>
+            <i>DynamicGaussian</i> can also perform many video processing downstream tasks.
+          </p>
+        </div>
+        </div>
+        <video id="bg" controls playsinline height="100%">
+              <source src="./static/videos/bg.mp4"
+                      type="video/mp4">
+            </video>
+            <video id="dup" controls playsinline height="100%">
+              <source src="./static/videos/dup.mp4"
+                      type="video/mp4">
+            </video>
+        <video id="flip" controls playsinline height="100%">
+              <source src="./static/videos/flip.mp4"
+                      type="video/mp4">
+            </video>
+            <video id="move" controls playsinline height="100%">
+              <source src="./static/videos/move.mp4"
+                      type="video/mp4">
+            </video>
+        <br/>
+      </div>
+    </div>
+  </div>
+        <!--/ Interpolating. -->
+</section>
+        <!-- Re-rendering. -->
+<section class="section">
+  <div class="container is-max-desktop">
+        <h3 class="title is-3">Tracking</h3>
+        <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <p>
+            Using <span class="dnerf">DynamicGaussian</span>, you can tracking the dynamic components in a video from a novel
+            viewpoint.
+          </p>
+        </div>
+          <video id="seg" controls playsinline height="100%">
+              <source src="./static/videos/seg.mp4"
+                      type="video/mp4">
+            </video>
+        </div>
+        </div>
+        <!--/ Re-rendering. -->
+  </div>
+</section>
+    <!--/ Animation. -->
+    <!-- Concurrent Work. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Related Links</h2>
+
+        <div class="content has-text-justified">
+          <p>
+            There's a lot of excellent work that was introduced around the same time as ours and inspired us a lot.
+          </p>
+          <p>
+            <a href="https://weify627.github.io/4drotorgs/125">4D-Rotors-Gaussian</a> introduces an 4D Gaussian's theories firstly but presents 4D Rotation with rotors.
+          </p>
+          <p>
+            <a href="https://free-view-video.github.io/">Dynamic NeRF</a>
+            introduces sceneflow to video reconstruction to constrain dynamic motions and decouples video into static and dynamic components with NeRF.
+          </p>
+          <p>
+            Some works model videos with deformation field gaussian splatting such as <a href=https://github.com/hustvl/4DGaussians>4D-Gaussian</a>, and <a href="https://github.com/ingra14m/Deformable-3D-Gaussians">Deformable-3D-Gaussians</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!--/ Concurrent Work. -->
+</section>
+
+<!--
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{park2021nerfies,
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+  title     = {Nerfies: Deformable Neural Radiance Fields},
+  journal   = {ICCV},
+  year      = {2021},
+}</code></pre>
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Thanks a lot for the Nerfies' <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> code of this website.
+            And Thanks for 4D-Rotors-Gaussian<a
+              href="https://weify627.github.io/4drotorgs/"> source code</a> and Dynamic-NeRF<a href="https://free-view-video.github.io/"> source code</a>, they inspired me a lot on this paper.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
